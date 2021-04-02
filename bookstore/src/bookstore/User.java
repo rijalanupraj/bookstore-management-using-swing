@@ -6,8 +6,6 @@ import java.sql.*;
 // Import ArrayList Class
 import java.util.ArrayList;
 
-import org.graalvm.compiler.nodes.java.NewArrayNode;
-
 public class User {
 
 	String username, password;

@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 public class Register {
 
-    JFrame fRegisterFrame = new JFrame("Regiser");
+    JFrame fRegisterFrame = new JFrame("Register");
     JLabel lUsername, lPassword, lConfirmPassword;
     JTextField tfUsername;
     JPasswordField pfPassword, pfConfirmPassword;
