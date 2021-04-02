@@ -78,7 +78,8 @@ public class Register {
 
                     User userObj = new User(username, password);
                     if (userObj.doesUsernameExists()) {
-                        JOptionPane.showMessageDialog(fRegisterFrame, "Username Already Exists");
+                        JOptionPane.showMessageDialog(fRegisterFrame, "Username Already Exists", "Alert",
+                                JOptionPane.WARNING_MESSAGE);
                     } else {
                         boolean result = userObj.registerUser();
                         if (result) {
@@ -86,7 +87,8 @@ public class Register {
                             new Login();
                             fRegisterFrame.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(fRegisterFrame, "Something went wrong");
+                            JOptionPane.showMessageDialog(fRegisterFrame, "Something went wrong", "Alert",
+                                    JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 }

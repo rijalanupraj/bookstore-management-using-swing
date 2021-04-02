@@ -64,7 +64,8 @@ public class Login {
 
                     fLoginFrame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(fLoginFrame, "Username/Password  Invalid");
+                    JOptionPane.showMessageDialog(fLoginFrame, "Username/Password  Invalid", "Alert",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
