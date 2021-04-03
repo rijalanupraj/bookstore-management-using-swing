@@ -9,7 +9,7 @@ public class AddBookWindow {
 
     AddBookWindow() {
         // Frame
-        JFrame jAddBookFrame = new JFrame();
+        JFrame jAddBookFrame = new JFrame("New Book");
         // Label
         JLabel lISBN, lTitle, lAuthor, lPublisher, lPublishedDate, lPrice, lQuantity;
         // TextField
@@ -119,6 +119,34 @@ public class AddBookWindow {
                     || price.isEmpty() || quantity.isEmpty()) {
                 JOptionPane.showMessageDialog(jAddBookFrame, "Fields cannot be empty", "Alert",
                         JOptionPane.WARNING_MESSAGE);
+            } else if (!Utils.isNumeric(quantity)) {
+                JOptionPane.showMessageDialog(jAddBookFrame, "Quantity should be whole number", "Alert",
+                        JOptionPane.WARNING_MESSAGE);
+            } else if (!Utils.isNumberOrDouble(price) || !(Double.parseDouble(price) > 0)) {
+                JOptionPane.showMessageDialog(jAddBookFrame, "The price should be greater than zero", "Alert",
+                        JOptionPane.WARNING_MESSAGE);
+            } else if (!Utils.isValidDate(publishedDate)) {
+                JOptionPane.showMessageDialog(jAddBookFrame, "Invalid Date Format. Format:yyyy-MM-dd", "Alert",
+                        JOptionPane.WARNING_MESSAGE);
+            } else if (Book.checkISBNExists(isbn)) {
+                JOptionPane.showMessageDialog(jAddBookFrame, "The ISBN number already exists", "Alert",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                boolean result = Book.addNewBook(isbn, title, author, publisher, publishedDate,
+                        Double.parseDouble(price), Integer.parseInt(quantity));
+                if (result) {
+                    JOptionPane.showMessageDialog(jAddBookFrame, "Book Added Successfully");
+                    tfISBN.setText("");
+                    tfTitle.setText("");
+                    tfAuthor.setText("");
+                    tfPublishedDate.setText("");
+                    tfPublisher.setText("");
+                    tfPrice.setText("");
+                    tfQuantity.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(jAddBookFrame, "Something went wrong", "Alert",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
 
         });
@@ -129,4 +157,5 @@ public class AddBookWindow {
         jAddBookFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
+
 }
