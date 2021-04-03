@@ -64,34 +64,50 @@ public class Register {
         // On SignUp Button Clicked
         btnSignUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = tfUsername.getText();
-                String password = pfPassword.getText();
-                String confirmPassword = pfPassword.getText();
 
-                if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                    JOptionPane.showMessageDialog(fRegisterFrame, "Field cannot be empty");
-                } else if (password.length() < 4) {
-                    JOptionPane.showMessageDialog(fRegisterFrame, "Password should be at least 4 characters");
-                } else if (!password.equals(confirmPassword)) {
-                    JOptionPane.showMessageDialog(fRegisterFrame, "Passwords didn't match");
+                boolean connectionWorking = DbConnect.isConnectionWorking();
+                // Checking if the DataBase Connection is Working
+                if (!connectionWorking) {
+                    JOptionPane.showMessageDialog(fRegisterFrame, "Database Connection Not Working", "Alert",
+                            JOptionPane.WARNING_MESSAGE);
                 } else {
 
-                    User userObj = new User(username, password);
-                    if (userObj.doesUsernameExists()) {
-                        JOptionPane.showMessageDialog(fRegisterFrame, "Username Already Exists", "Alert",
-                                JOptionPane.WARNING_MESSAGE);
+                    String username = tfUsername.getText();
+                    String password = pfPassword.getText();
+                    String confirmPassword = pfPassword.getText();
+
+                    if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                        JOptionPane.showMessageDialog(fRegisterFrame, "Field cannot be empty");
+                    } else if (password.length() < 4) {
+                        JOptionPane.showMessageDialog(fRegisterFrame, "Password should be at least 4 characters");
+                    } else if (!password.equals(confirmPassword)) {
+                        JOptionPane.showMessageDialog(fRegisterFrame, "Passwords didn't match");
                     } else {
-                        boolean result = userObj.registerUser();
-                        if (result) {
-                            JOptionPane.showMessageDialog(fRegisterFrame, "User Registered");
-                            new Login();
-                            fRegisterFrame.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(fRegisterFrame, "Something went wrong", "Alert",
+
+                        User userObj = new User(username, password);
+                        if (userObj.doesUsernameExists()) {
+                            JOptionPane.showMessageDialog(fRegisterFrame, "Username Already Exists", "Alert",
                                     JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            boolean result = userObj.registerUser();
+                            if (result) {
+                                JOptionPane.showMessageDialog(fRegisterFrame, "User Registered");
+                                new Login();
+                                fRegisterFrame.dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(fRegisterFrame, "Something went wrong", "Alert",
+                                        JOptionPane.WARNING_MESSAGE);
+                            }
                         }
                     }
                 }
+            }
+        });
+
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                fRegisterFrame.dispose();
             }
         });
 

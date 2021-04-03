@@ -13,7 +13,14 @@ public class DbConnect {
         } catch (SQLException e) {
             System.out.println("Database Connection Error");
             e.printStackTrace();
+            return null;
         }
         return con;
     }
+
+    static public boolean isConnectionWorking() {
+        Connection con = connection();
+        return (con != null);
+    }
+
 }

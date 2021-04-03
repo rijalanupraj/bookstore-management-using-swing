@@ -104,6 +104,25 @@ public class AddBookWindow {
             }
         });
 
+        // On Click - Save Button
+        btnSave.addActionListener(e -> {
+            String isbn = tfISBN.getText();
+            String title = tfTitle.getText();
+            String author = tfAuthor.getText();
+            String publisher = tfPublisher.getText();
+            String publishedDate = tfPublishedDate.getText();
+            String price = tfPrice.getText();
+            String quantity = tfQuantity.getText();
+
+            // Validating the fields
+            if (isbn.isEmpty() || title.isEmpty() || author.isEmpty() || publishedDate.isEmpty() || publisher.isEmpty()
+                    || price.isEmpty() || quantity.isEmpty()) {
+                JOptionPane.showMessageDialog(jAddBookFrame, "Fields cannot be empty", "Alert",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+
+        });
+
         jAddBookFrame.setLayout(null);
         jAddBookFrame.setVisible(true);
         jAddBookFrame.setSize(600, 600);

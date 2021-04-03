@@ -53,11 +53,10 @@ public class User {
 	ArrayList<User> getAllUsers() {
 		ArrayList<User> userArray = new ArrayList<User>();
 
-		Connection con = DbConnect.connection();
-
 		String query = "SELECT username, password FROM user";
 
 		try {
+			Connection con = DbConnect.connection();
 			PreparedStatement ins = con.prepareStatement(query);
 			ResultSet rs = ins.executeQuery();
 			while (rs.next()) {

@@ -40,7 +40,7 @@ public class Login {
         fLoginFrame.add(btnLogin);
 
         // Button - SingUp
-        btnSignUp = new JButton("SignUp");
+        btnSignUp = new JButton("Register");
         btnSignUp.setBounds(290, 220, 100, 30);
         fLoginFrame.add(btnSignUp);
 
@@ -54,17 +54,24 @@ public class Login {
         // On Login Button Clicked
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = tfUsername.getText();
-                String psw = pfPassword.getText();
-                User userObj = new User(username, psw);
-                if (userObj.checkCredentials()) {
-                    new Dashboard();
-                    JOptionPane.showMessageDialog(fLoginFrame, "Welcome Back");
-
-                    fLoginFrame.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(fLoginFrame, "Username/Password  Invalid", "Alert",
+                boolean connectionWorking = DbConnect.isConnectionWorking();
+                // Checking if the DataBase Connection is Working
+                if (!connectionWorking) {
+                    JOptionPane.showMessageDialog(fLoginFrame, "Database Connection Not Working", "Alert",
                             JOptionPane.WARNING_MESSAGE);
+                } else {
+                    String username = tfUsername.getText();
+                    String psw = pfPassword.getText();
+                    User userObj = new User(username, psw);
+                    if (userObj.checkCredentials()) {
+                        new Dashboard();
+                        JOptionPane.showMessageDialog(fLoginFrame, "Welcome Back");
+
+                        fLoginFrame.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(fLoginFrame, "Username/Password  Invalid", "Alert",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         });
