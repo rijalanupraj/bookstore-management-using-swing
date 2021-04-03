@@ -8,22 +8,23 @@ import java.awt.event.*;
 public class Dashboard {
 
     Dashboard() {
-
+        // Frame
         JFrame fDashboardFrame = new JFrame("Dashboard");
 
+        // jButton
+        JButton btnAddBookWindow;
 
+        btnAddBookWindow = new JButton("Add Book");
+        btnAddBookWindow.setBounds(100, 100, 200, 60);
+        fDashboardFrame.add(btnAddBookWindow);
 
-
-
-
-
-
-
-
-
-
-
-
+        // On Click - Add Book Button
+        btnAddBookWindow.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new AddBookWindow();
+                fDashboardFrame.dispose();
+            }
+        });
 
         fDashboardFrame.setLayout(null);
         fDashboardFrame.setVisible(true);

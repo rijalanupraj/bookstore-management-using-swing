@@ -41,8 +41,7 @@ public class User {
 			ins.setString(2, this.password);
 			ins.setInt(3, 1);
 			boolean result = ins.execute();
-			System.out.println(result);
-			return true;
+			return !result;
 
 		} catch (SQLException error) {
 			System.out.println(error);

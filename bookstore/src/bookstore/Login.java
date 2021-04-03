@@ -58,8 +58,7 @@ public class Login {
                 String psw = pfPassword.getText();
                 User userObj = new User(username, psw);
                 if (userObj.checkCredentials()) {
-                    // Where you want to redirect
-                    // new Home();
+                    new Dashboard();
                     JOptionPane.showMessageDialog(fLoginFrame, "Welcome Back");
 
                     fLoginFrame.dispose();
