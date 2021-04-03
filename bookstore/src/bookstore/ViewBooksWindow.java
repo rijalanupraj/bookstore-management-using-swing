@@ -13,15 +13,18 @@ public class ViewBooksWindow {
 
     ViewBooksWindow() {
         JFrame fViewBook = new JFrame("View Book");
-        JButton btnBack;
+        JButton btnBack, btnDeleteBook;
 
         // Header For table
         String header[] = { "ISBN", "Title", "Author", "Publisher", "Published Date", "Price", "Available", "Sold" };
 
+        // Getting all books from Database using book class
         ArrayList<Book> booksArray = Book.getAllBooks();
 
+        // Data to show in the table
         Object data[][] = new Object[booksArray.size()][header.length];
 
+        // For loop to assign value to the data
         for (int i = 0; i < booksArray.size(); i++) {
             Book row = booksArray.get(i);
             data[i][0] = row.isbn;
@@ -38,18 +41,47 @@ public class ViewBooksWindow {
         JTable jBookViewTable = new JTable(data, header);
         JScrollPane bookViewScrollPane = new JScrollPane(jBookViewTable);
         fViewBook.add(bookViewScrollPane);
-        bookViewScrollPane.setBounds(100, 200, 700, 300);
+        bookViewScrollPane.setBounds(100, 200, 700, 400);
 
         // Back Button
         btnBack = new JButton("Back");
         btnBack.setBounds(10, 10, 100, 30);
         fViewBook.add(btnBack);
 
+        // Delete Button
+        btnDeleteBook = new JButton("Delete");
+        btnDeleteBook.setBounds(100, 650, 100, 30);
+        fViewBook.add(btnDeleteBook);
+
         // On Click - Back Button
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Dashboard();
                 fViewBook.dispose();
+            }
+        });
+
+        // On Click - Delete Book
+        btnDeleteBook.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int row = jBookViewTable.getSelectedRow();
+                if (row >= 0) {
+                    int bookId = booksArray.get(row).id;
+                    boolean result = Book.deleteBook(bookId);
+                    if (result) {
+                        JOptionPane.showMessageDialog(fViewBook, "Book Deleted");
+                        new ViewBooksWindow();
+                        fViewBook.dispose();
+
+                    } else {
+                        JOptionPane.showMessageDialog(fViewBook, "Something went wrong", "Alert",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(fViewBook, "Select the Row first");
+                }
+
             }
         });
 

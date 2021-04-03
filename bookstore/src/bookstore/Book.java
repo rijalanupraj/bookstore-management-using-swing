@@ -94,4 +94,22 @@ public class Book {
         }
     }
 
+    static boolean deleteBook(int id) {
+        try {
+            // DbConnect Class
+            Connection con = DbConnect.connection();
+
+            // Delete Query
+            String query = "DELETE FROM book where id=?";
+            PreparedStatement ins = con.prepareStatement(query);
+            ins.setInt(1, id);
+            boolean result = ins.execute();
+            return !result;
+
+        } catch (SQLException error) {
+            System.out.println(error);
+            return false;
+        }
+    }
+
 }
