@@ -12,16 +12,30 @@ public class Dashboard {
         JFrame fDashboardFrame = new JFrame("Dashboard");
 
         // jButton
-        JButton btnAddBookWindow;
+        JButton btnAddBookWindow, btnViewBookWindow;
 
+        // Add Book Window Button
         btnAddBookWindow = new JButton("Add Book");
         btnAddBookWindow.setBounds(100, 100, 200, 60);
         fDashboardFrame.add(btnAddBookWindow);
+
+        // View Book Window Button
+        btnViewBookWindow = new JButton("View Books");
+        btnViewBookWindow.setBounds(320, 100, 200, 60);
+        fDashboardFrame.add(btnViewBookWindow);
 
         // On Click - Add Book Button
         btnAddBookWindow.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new AddBookWindow();
+                fDashboardFrame.dispose();
+            }
+        });
+
+        // On Click - View Book Button
+        btnViewBookWindow.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new ViewBooksWindow();
                 fDashboardFrame.dispose();
             }
         });

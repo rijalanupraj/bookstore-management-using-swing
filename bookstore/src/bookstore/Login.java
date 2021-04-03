@@ -64,9 +64,8 @@ public class Login {
                     String psw = pfPassword.getText();
                     User userObj = new User(username, psw);
                     if (userObj.checkCredentials()) {
-                        new Dashboard();
                         JOptionPane.showMessageDialog(fLoginFrame, "Welcome Back");
-
+                        new Dashboard();
                         fLoginFrame.dispose();
                     } else {
                         JOptionPane.showMessageDialog(fLoginFrame, "Username/Password  Invalid", "Alert",
