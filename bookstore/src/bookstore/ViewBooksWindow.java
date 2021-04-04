@@ -13,7 +13,7 @@ public class ViewBooksWindow {
         JFrame fViewBook = new JFrame("View Book");
         JLabel lSearchByLabel, lSortByLabel, lSortByOrderLabel;
         JTextField tfSearchTextInput;
-        JButton btnBack, btnSearch, btnDeleteBook, btnEditBook;
+        JButton btnBack, btnSearch, btnOnlySort, btnDeleteBook, btnEditBook;
         JComboBox<String> cbSearchByBox, cbSortByBox;
         JCheckBox chbSortOrderBox;
 
@@ -61,6 +61,7 @@ public class ViewBooksWindow {
         fViewBook.add(lSortByOrderLabel);
 
         // Search By Fields
+        String searchByDatabaseFields[] = { "title", "author", "publisher", "published_date" };
         String searchByFields[] = { "Title", "Author", "Publisher", "Date" };
         // Combo Box - Search By
         cbSearchByBox = new JComboBox<String>(searchByFields);
@@ -68,6 +69,8 @@ public class ViewBooksWindow {
         fViewBook.add(cbSearchByBox);
 
         // Sort By Fields
+        String sortByDatabaseFields[] = { "id", "isbn", "title", "author", "published_date", "num_available",
+                "num_sold" };
         String sortByFields[] = { "Default", "ISBN", "Title", "Author", "Published Date", "Available", "Sold" };
         // Combo Box - Sort By
         cbSortByBox = new JComboBox<String>(sortByFields);
@@ -88,6 +91,11 @@ public class ViewBooksWindow {
         btnSearch = new JButton("Search");
         btnSearch.setBounds(670, 100, 100, 30);
         fViewBook.add(btnSearch);
+
+        // Only Sort Button
+        btnOnlySort = new JButton("Sort Only");
+        btnOnlySort.setBounds(670, 140, 100, 30);
+        fViewBook.add(btnOnlySort);
 
         // Back Button
         btnBack = new JButton("Back");
@@ -147,6 +155,24 @@ public class ViewBooksWindow {
 
                 } else {
                     JOptionPane.showMessageDialog(fViewBook, "Select the Row first");
+                }
+
+            }
+        });
+
+        // On Click - Search
+        btnSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String searchBoxText = tfSearchTextInput.getText();
+                int searchByTextComboBoxIndex = cbSearchByBox.getSelectedIndex();
+                int sortByTextComboBoxIndex = cbSortByBox.getSelectedIndex();
+                String searchByText = searchByDatabaseFields[searchByTextComboBoxIndex];
+                String sortByText = sortByDatabaseFields[sortByTextComboBoxIndex];
+                boolean descending = chbSortOrderBox.isSelected();
+                if (searchBoxText.isEmpty()) {
+                    JOptionPane.showMessageDialog(fViewBook, "First Enter text to search");
+                } else {
+                    System.out.println(searchByText + " " + sortByText + " " + descending);
                 }
 
             }
