@@ -13,7 +13,7 @@ public class ViewBooksWindow {
 
     ViewBooksWindow() {
         JFrame fViewBook = new JFrame("View Book");
-        JButton btnBack, btnDeleteBook;
+        JButton btnBack, btnDeleteBook, btnEditBook;
 
         // Header For table
         String header[] = { "ISBN", "Title", "Author", "Publisher", "Published Date", "Price", "Available", "Sold" };
@@ -50,8 +50,13 @@ public class ViewBooksWindow {
 
         // Delete Button
         btnDeleteBook = new JButton("Delete");
-        btnDeleteBook.setBounds(100, 650, 100, 30);
+        btnDeleteBook.setBounds(100, 650, 200, 30);
         fViewBook.add(btnDeleteBook);
+
+        // Edit Button
+        btnEditBook = new JButton("Edit");
+        btnEditBook.setBounds(350, 650, 200, 30);
+        fViewBook.add(btnEditBook);
 
         // On Click - Back Button
         btnBack.addActionListener(new ActionListener() {
@@ -77,6 +82,22 @@ public class ViewBooksWindow {
                         JOptionPane.showMessageDialog(fViewBook, "Something went wrong", "Alert",
                                 JOptionPane.WARNING_MESSAGE);
                     }
+
+                } else {
+                    JOptionPane.showMessageDialog(fViewBook, "Select the Row first");
+                }
+
+            }
+        });
+
+        // On Click - Edit Book
+        btnEditBook.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int row = jBookViewTable.getSelectedRow();
+                if (row >= 0) {
+                    Book bookInstance = booksArray.get(row);
+                    fViewBook.dispose();
+                    new EditBookWindow(bookInstance);
 
                 } else {
                     JOptionPane.showMessageDialog(fViewBook, "Select the Row first");

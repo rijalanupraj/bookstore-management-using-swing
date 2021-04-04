@@ -100,9 +100,35 @@ public class Book {
             Connection con = DbConnect.connection();
 
             // Delete Query
-            String query = "DELETE FROM book where id=?";
+            String query = "DELETE FROM book WHERE id=?";
             PreparedStatement ins = con.prepareStatement(query);
             ins.setInt(1, id);
+            boolean result = ins.execute();
+            return !result;
+
+        } catch (SQLException error) {
+            System.out.println(error);
+            return false;
+        }
+    }
+
+    static boolean updateBook(int id, String isbn, String title, String author, String publisher, String publishedDate,
+            Double price, int numAvailable, int numSold) {
+        try {
+            // DbConnect Class
+            Connection con = DbConnect.connection();
+
+            String query = "Update book SET isbn=?, title=?, author=?, publisher=?, published_date=?, price=?, num_available=?, num_sold=? WHERE id=?";
+            PreparedStatement ins = con.prepareStatement(query);
+            ins.setString(1, isbn);
+            ins.setString(2, title);
+            ins.setString(3, author);
+            ins.setString(4, publisher);
+            ins.setString(5, publishedDate);
+            ins.setDouble(6, price);
+            ins.setInt(7, numAvailable);
+            ins.setInt(8, numSold);
+            ins.setInt(9, id);
             boolean result = ins.execute();
             return !result;
 
