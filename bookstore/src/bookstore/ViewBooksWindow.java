@@ -2,8 +2,6 @@ package bookstore;
 
 // Swing
 import javax.swing.*;
-// Table Model
-import javax.swing.table.TableModel;
 // Array List
 import java.util.ArrayList;
 // Import Event Package
@@ -13,7 +11,11 @@ public class ViewBooksWindow {
 
     ViewBooksWindow() {
         JFrame fViewBook = new JFrame("View Book");
-        JButton btnBack, btnDeleteBook, btnEditBook;
+        JLabel lSearchByLabel, lSortByLabel, lSortByOrderLabel;
+        JTextField tfSearchTextInput;
+        JButton btnBack, btnSearch, btnDeleteBook, btnEditBook;
+        JComboBox<String> cbSearchByBox, cbSortByBox;
+        JCheckBox chbSortOrderBox;
 
         // Header For table
         String header[] = { "ISBN", "Title", "Author", "Publisher", "Published Date", "Price", "Available", "Sold" };
@@ -42,6 +44,50 @@ public class ViewBooksWindow {
         JScrollPane bookViewScrollPane = new JScrollPane(jBookViewTable);
         fViewBook.add(bookViewScrollPane);
         bookViewScrollPane.setBounds(100, 200, 700, 400);
+
+        // Label - Search By
+        lSearchByLabel = new JLabel("Search By");
+        lSearchByLabel.setBounds(100, 60, 100, 30);
+        fViewBook.add(lSearchByLabel);
+
+        // Label - Sort By
+        lSortByLabel = new JLabel("Sort By");
+        lSortByLabel.setBounds(220, 60, 100, 30);
+        fViewBook.add(lSortByLabel);
+
+        // Label - Sort By Order
+        lSortByOrderLabel = new JLabel("Order By");
+        lSortByOrderLabel.setBounds(340, 60, 100, 30);
+        fViewBook.add(lSortByOrderLabel);
+
+        // Search By Fields
+        String searchByFields[] = { "Title", "Author", "Publisher", "Date" };
+        // Combo Box - Search By
+        cbSearchByBox = new JComboBox<String>(searchByFields);
+        cbSearchByBox.setBounds(100, 100, 100, 30);
+        fViewBook.add(cbSearchByBox);
+
+        // Sort By Fields
+        String sortByFields[] = { "Default", "ISBN", "Title", "Author", "Published Date", "Available", "Sold" };
+        // Combo Box - Sort By
+        cbSortByBox = new JComboBox<String>(sortByFields);
+        cbSortByBox.setBounds(220, 100, 100, 30);
+        fViewBook.add(cbSortByBox);
+
+        // CheckBox - Sort Order Ascending||Descending
+        chbSortOrderBox = new JCheckBox("Descending");
+        chbSortOrderBox.setBounds(340, 100, 100, 30);
+        fViewBook.add(chbSortOrderBox);
+
+        // Main Search Input Box
+        tfSearchTextInput = new JTextField();
+        tfSearchTextInput.setBounds(450, 100, 200, 30);
+        fViewBook.add(tfSearchTextInput);
+
+        // SearchButton
+        btnSearch = new JButton("Search");
+        btnSearch.setBounds(670, 100, 100, 30);
+        fViewBook.add(btnSearch);
 
         // Back Button
         btnBack = new JButton("Back");
@@ -111,6 +157,10 @@ public class ViewBooksWindow {
         fViewBook.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         fViewBook.setVisible(true);
 
+    }
+
+    public static void main(String[] args) {
+        new ViewBooksWindow();
     }
 
 }
