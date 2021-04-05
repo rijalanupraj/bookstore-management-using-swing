@@ -2,6 +2,8 @@ package bookstore;
 
 // Swing
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 // Array List
 import java.util.ArrayList;
 // Import Event Package
@@ -24,20 +26,7 @@ public class ViewBooksWindow {
         ArrayList<Book> booksArray = Book.getAllBooks();
 
         // Data to show in the table
-        Object data[][] = new Object[booksArray.size()][header.length];
-
-        // For loop to assign value to the data
-        for (int i = 0; i < booksArray.size(); i++) {
-            Book row = booksArray.get(i);
-            data[i][0] = row.isbn;
-            data[i][1] = row.title;
-            data[i][2] = row.author;
-            data[i][3] = row.publisher;
-            data[i][4] = row.publishedDate;
-            data[i][5] = row.price;
-            data[i][6] = row.numAvailable;
-            data[i][7] = row.numSold;
-        }
+        Object data[][] = assignDataToTable(booksArray, header);
 
         // Table it will take two parameter: data && header
         JTable jBookViewTable = new JTable(data, header);
@@ -172,7 +161,15 @@ public class ViewBooksWindow {
                 if (searchBoxText.isEmpty()) {
                     JOptionPane.showMessageDialog(fViewBook, "First Enter text to search");
                 } else {
-                    System.out.println(searchByText + " " + sortByText + " " + descending);
+                    // System.out.println(searchByText + " " + sortByText + " " + descending);
+                    ArrayList<Book> querySet = Book.searchBooks(searchBoxText, searchByText);
+                    if (querySet.isEmpty()) {
+                        JOptionPane.showMessageDialog(fViewBook, "Nothing Found", "Alert", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        Object queryData[][] = assignDataToTable(querySet, header);
+                        DefaultTableModel a = new DefaultTableModel(queryData, header);
+                        jBookViewTable.setModel(a);
+                    }
                 }
 
             }
@@ -183,6 +180,23 @@ public class ViewBooksWindow {
         fViewBook.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         fViewBook.setVisible(true);
 
+    }
+
+    private Object[][] assignDataToTable(ArrayList<Book> booksArray, String[] header) {
+        Object data[][] = new Object[booksArray.size()][header.length];
+        // For loop to assign value to the data
+        for (int i = 0; i < booksArray.size(); i++) {
+            Book row = booksArray.get(i);
+            data[i][0] = row.isbn;
+            data[i][1] = row.title;
+            data[i][2] = row.author;
+            data[i][3] = row.publisher;
+            data[i][4] = row.publishedDate;
+            data[i][5] = row.price;
+            data[i][6] = row.numAvailable;
+            data[i][7] = row.numSold;
+        }
+        return data;
     }
 
     public static void main(String[] args) {

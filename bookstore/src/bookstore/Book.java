@@ -138,4 +138,60 @@ public class Book {
         }
     }
 
+    public static ArrayList<Book> searchBooks(String query, String databaseField) {
+        ArrayList<Book> allBooks = getAllBooks();
+        ArrayList<Book> querySet = new ArrayList<Book>();
+        String searchQuery = query.toLowerCase();
+        for (int i = 0; i < allBooks.size(); i++) {
+            Book book = allBooks.get(i);
+            String databaseFieldData = getValueFromDatabaseFieldsForSearching(book, databaseField);
+
+            boolean isEqual = databaseFieldData.equals(searchQuery);
+            if (isEqual) {
+                querySet.add(book);
+            }
+        }
+        return querySet;
+
+    }
+
+    public static ArrayList<Book> sortBooks(String query, String databaseField) {
+        ArrayList<Book> allBooks = getAllBooks();
+        ArrayList<Book> querySet = new ArrayList<Book>();
+        String searchQuery = query.toLowerCase();
+        for (int i = 0; i < allBooks.size(); i++) {
+            Book book = allBooks.get(i);
+            String databaseFieldData = getValueFromDatabaseFieldsForSearching(book, databaseField);
+
+            boolean isEqual = databaseFieldData.equals(searchQuery);
+            if (isEqual) {
+                querySet.add(book);
+            }
+        }
+        return querySet;
+
+    }
+
+    private static String getValueFromDatabaseFieldsForSearching(Book book, String databaseField) {
+        String databaseFieldData = "";
+        switch (databaseField) {
+        case "title":
+            databaseFieldData = book.title.toLowerCase();
+            break;
+
+        case "author":
+            databaseFieldData = book.author.toLowerCase();
+            break;
+
+        case "publisher":
+            databaseFieldData = book.publisher.toLowerCase();
+            break;
+
+        case "published_date":
+            databaseFieldData = book.publishedDate.toLowerCase();
+            break;
+        }
+        return databaseFieldData;
+    }
+
 }
