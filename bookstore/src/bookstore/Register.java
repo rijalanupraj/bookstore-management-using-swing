@@ -4,6 +4,7 @@ package bookstore;
 import javax.swing.*;
 // Import Event Package
 import java.awt.event.*;
+import java.awt.*;
 
 public class Register {
 
@@ -12,51 +13,94 @@ public class Register {
     JTextField tfUsername;
     JPasswordField pfPassword, pfConfirmPassword;
     JButton btnLogin, btnSignUp;
+    JPanel panel;
 
     Register() {
+
+        // Using GridBag Layout
+        panel = new JPanel();
+        panel.setSize(500, 500);
+        GridBagLayout layout = new GridBagLayout();
+        panel.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+
         // Label - Username
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.ipadx = 20;
         lUsername = new JLabel("Username");
-        lUsername.setBounds(130, 90, 300, 50);
-        fRegisterFrame.add(lUsername);
+        panel.add(lUsername, gbc);
 
         // TextField - Username
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         tfUsername = new JTextField();
-        tfUsername.setBounds(240, 100, 300, 30);
-        fRegisterFrame.add(tfUsername);
+        tfUsername.setPreferredSize(new Dimension(150, 30));
+        panel.add(tfUsername, gbc);
+
+        // -------------- Username Ends ----------------------
+
+        // -------------- Password Starts --------------------
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Label - Password
+        gbc.insets = new Insets(10, 0, 0, 0); // top padding
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         lPassword = new JLabel("Password");
-        lPassword.setBounds(130, 130, 300, 50);
-        fRegisterFrame.add(lPassword);
+        panel.add(lPassword, gbc);
 
-        // PasswordField - Password
+        // TextField - Password
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         pfPassword = new JPasswordField();
-        pfPassword.setBounds(240, 140, 300, 30);
-        fRegisterFrame.add(pfPassword);
+        pfPassword.setPreferredSize(new Dimension(150, 30));
+        panel.add(pfPassword, gbc);
+
+        // -------------- Password Ends ----------------------
+
+        // -------------- Confirm Password Starts --------------------
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Label - Confirm Password
+        gbc.insets = new Insets(10, 0, 0, 0); // top padding
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         lConfirmPassword = new JLabel("Confirm Password");
-        lConfirmPassword.setBounds(130, 170, 300, 50);
-        fRegisterFrame.add(lConfirmPassword);
+        panel.add(lConfirmPassword, gbc);
 
-        // PasswordField - Confirm Password
+        // TextField - Confirm Password
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         pfConfirmPassword = new JPasswordField();
-        pfConfirmPassword.setBounds(240, 180, 300, 30);
-        fRegisterFrame.add(pfConfirmPassword);
+        pfConfirmPassword.setPreferredSize(new Dimension(150, 30));
+        panel.add(pfConfirmPassword, gbc);
 
-        // Button - SingUp
-        btnSignUp = new JButton("Register");
-        btnSignUp.setBounds(300, 230, 100, 30);
-        fRegisterFrame.add(btnSignUp);
+        // -------------- Confirm Password Ends ----------------------
+
+        // -------------- Button Starts --------------------
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Button - Register
+        gbc.insets = new Insets(10, 0, 0, 0); // top padding
+        btnSignUp = new JButton("Create A Account");
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panel.add(btnSignUp, gbc);
 
         // Button - Login
-        btnLogin = new JButton("Login");
-        btnLogin.setBounds(300, 270, 100, 30);
-        fRegisterFrame.add(btnLogin);
+        gbc.insets = new Insets(10, 0, 0, 0); // top padding
+        btnLogin = new JButton("Have A Account");
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        panel.add(btnLogin, gbc);
 
-        fRegisterFrame.setLayout(null);
+        // -------------- Button Ends ----------------------
+
+        fRegisterFrame.add(panel);
+        // fRegisterFrame.setLayout(null);
         fRegisterFrame.setVisible(true);
-        fRegisterFrame.setSize(700, 500);
+        fRegisterFrame.setSize(500, 500);
 
         // Stop the program once the cross button is clicked
         fRegisterFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
