@@ -204,81 +204,120 @@ public class Book {
 
     }
 
-    public static ArrayList<Book> sortBooks(String query, String databaseField) {
-        ArrayList<Book> allBooks = getAllBooks();
-        ArrayList<Book> querySet = new ArrayList<Book>();
-        String searchQuery = query.toLowerCase();
-        for (int i = 0; i < allBooks.size(); i++) {
-            Book book = allBooks.get(i);
-            String databaseFieldData = getValueFromDatabaseFieldsForSearching(book, databaseField);
+    public static ArrayList<Book> convertObjectToArrayList(Object[][] booksObjects) {
+        ArrayList<Book> booksList = new ArrayList<Book>();
+        for (int i = 0; i < booksObjects.length; i++) {
 
-            boolean isEqual = databaseFieldData.equals(searchQuery);
-            if (isEqual) {
-                querySet.add(book);
-            }
+            Integer id = (int) booksObjects[i][0];
+            String isbn = booksObjects[i][1].toString();
+            String title = booksObjects[i][2].toString();
+            String author = booksObjects[i][3].toString();
+            String publisher = booksObjects[i][4].toString();
+            String publishedDate = booksObjects[i][5].toString();
+            Double price = (double) booksObjects[i][6];
+            int numAvailable = (int) booksObjects[i][7];
+            int numSold = (int) booksObjects[i][8];
+            Book newObj = new Book(id, isbn, title, author, publisher, publishedDate, price, numAvailable, numSold);
+            booksList.add(newObj);
         }
-        return querySet;
-
+        return booksList;
     }
 
-    public Object[][] getBooksInObjects() {
-        ArrayList<Book> allBooks = getAllBooks();
-        Object[][] books = new Object[allBooks.size()][7];
-        for (int i = 0; i < allBooks.size(); i++) {
+    public static Object[][] getBooksInObjects(ArrayList<Book> booksList) {
+        Object[][] books = new Object[booksList.size()][9];
+        for (int i = 0; i < booksList.size(); i++) {
 
-            Book current = allBooks.get(i);
+            Book current = booksList.get(i);
             books[i][0] = current.id;
             books[i][1] = current.isbn;
             books[i][2] = current.title;
             books[i][3] = current.author;
             books[i][4] = current.publisher;
             books[i][5] = current.publishedDate;
-            books[i][6] = current.numAvailable;
-            books[i][7] = current.numSold;
+            books[i][6] = current.price;
+            books[i][7] = current.numAvailable;
+            books[i][8] = current.numSold;
 
         }
         return books;
     }
 
-    // public void mergeSort(int arr[], int l, int r) {
+    public static Object[][] performSortOperation(ArrayList<Book> booksList, int index) {
 
-    // if (l < r) {
-    // int m = l + (r - l) / 2;
-    // mergeSort(arr, l, m);
-    // mergeSort(arr, m + 1, r);
-    // merge(arr, l, m, r);
-    // }
-    // for (int i : arr) {
-    // System.out.println(i);
-    // }
-    // }
+        Object[][] books = getBooksInObjects(booksList);
+        sort(books, 0, books.length - 1, index);
+        return books;
 
-    // public void merge(int arr[], int l, int m, int r) {
-    // int n1 = m - l + 1;
-    // int n2 = r - m;
-    // int[] L = new int[n1];
-    // int[] R = new int[n2];
-    // for (int i = 0; i < n1; i++) {
-    // L[i] = arr[l + i];
-    // }
-    // for (int i = 0; i < n2; i++) {
-    // R[i] = arr[m + 1 + i];
-    // }
-    // int i = 0, j = 0, k = l;
-    // while (i < n1 && j < n2) {
-    // if (L[i] <= R[j]) {
-    // arr[k++] = L[i++];
-    // } else {
-    // arr[k++] = R[j++];
-    // }
-    // }
-    // while (i < n1) {
-    // arr[k++] = L[i++];
-    // }
-    // while (j < n2) {
-    // arr[k++] = R[j++];
-    // }
-    // }
+    }
+
+    public static void merge(Object arr[][], int left, int mid, int right, int index) {
+        // Find sizes of two subarrays to be merged
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        // Create temp arrays
+        Object[][] left_arr = new Object[n1][9];
+        Object[][] right_arr = new Object[n2][9];
+        // Copy data to temp arrays
+        for (int i = 0; i < n1; ++i)
+            left_arr[i] = arr[left + i];
+        for (int j = 0; j < n2; ++j)
+            right_arr[j] = arr[mid + 1 + j];
+        // Merge the temp arrays
+        // Initial indexes of first and second subarrays
+        int i = 0, j = 0;
+        // Initial index of merged subarry array
+        int k = left;
+        while (i < n1 && j < n2) {
+            boolean compare = false;
+            if (index == 0 || index == 7 || index == 8) {
+                Integer integerField = (int) left_arr[i][index];
+                compare = Integer.compare(integerField, (int) right_arr[j][index]) < 0;
+
+            } else if (index == 6) {
+                Double doubleField = (Double) left_arr[i][index];
+                compare = Double.compare(doubleField, (Double) right_arr[j][index]) < 0;
+            }
+
+            else {
+                String stringField = (String) left_arr[i][index];
+                compare = stringField.compareToIgnoreCase((String) right_arr[j][index]) < 0;
+            }
+            if (compare) {
+                arr[k] = left_arr[i];
+                i++;
+            } else {
+                arr[k] = right_arr[j];
+                j++;
+            }
+
+            k++;
+        }
+        // Copy remaining elements of left_arr[] if any
+        while (i < n1) {
+            arr[k] = left_arr[i];
+            i++;
+            k++;
+        }
+        // Copy remaining elements of right_arr[] if any
+        while (j < n2) {
+            arr[k] = right_arr[j];
+            j++;
+            k++;
+        }
+    }
+
+    // sort two halves and merge
+    public static void sort(Object arr[][], int left, int right, int index) {
+        if (left < right) {
+            // Find the middle point
+            int mid = left + (right - left) / 2;
+            // Sort first and second halves
+            sort(arr, left, mid, index);
+            sort(arr, mid + 1, right, index);
+            // Merge the sorted halves
+            merge(arr, left, mid, right, index);
+        }
+    }
 
     private static String getValueFromDatabaseFieldsForSearching(Book book, String databaseField) {
         String databaseFieldData = "";

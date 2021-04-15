@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 
 // Array List
 import java.util.ArrayList;
+import java.util.Collections;
 // Import Event Package
 import java.awt.event.*;
 
@@ -15,7 +16,8 @@ public class ViewBooksWindow {
         JFrame fViewBook = new JFrame("View Book");
         JLabel lSearchByLabel, lSortByLabel, lSortByOrderLabel;
         JTextField tfSearchTextInput;
-        JButton btnBack, btnSearch, btnOnlySort, btnDeleteBook, btnEditBook, btnViewAvailable, btnViewSold, btnSell, btnRefresh;
+        JButton btnBack, btnSearch, btnOnlySort, btnDeleteBook, btnEditBook, btnViewAvailable, btnViewSold, btnSell,
+                btnRefresh;
         JComboBox<String> cbSearchByBox, cbSortByBox;
         JCheckBox chbSortOrderBox;
 
@@ -58,9 +60,8 @@ public class ViewBooksWindow {
         fViewBook.add(cbSearchByBox);
 
         // Sort By Fields
-        String sortByDatabaseFields[] = { "id", "isbn", "title", "author", "published_date", "num_available",
-                "num_sold" };
-        String sortByFields[] = { "Default", "ISBN", "Title", "Author", "Published Date", "Available", "Sold" };
+        String sortByFields[] = { "Default", "ISBN", "Title", "Author", "Publisher", "Published Date", "Price",
+                "Available", "Sold" };
         // Combo Box - Sort By
         cbSortByBox = new JComboBox<String>(sortByFields);
         cbSortByBox.setBounds(220, 100, 100, 30);
@@ -77,8 +78,8 @@ public class ViewBooksWindow {
         fViewBook.add(tfSearchTextInput);
 
         // SearchButton
-        btnSearch = new JButton("Search");
-        btnSearch.setBounds(670, 100, 100, 30);
+        btnSearch = new JButton("Search and Sort");
+        btnSearch.setBounds(670, 100, 200, 30);
         fViewBook.add(btnSearch);
 
         // Only Sort Button
@@ -185,6 +186,23 @@ public class ViewBooksWindow {
             }
         });
 
+        // On Click - Sort
+        btnOnlySort.addActionListener(e -> {
+            int sortByTextComboBoxIndex = cbSortByBox.getSelectedIndex();
+            boolean isDescending = chbSortOrderBox.isSelected();
+            Object[][] sortedArray = Book.performSortOperation(booksArray, sortByTextComboBoxIndex);
+            ArrayList<Book> querySet = Book.convertObjectToArrayList(sortedArray);
+            if (isDescending) {
+                Collections.reverse(querySet);
+            }
+            booksArray.clear();
+            booksArray.addAll(querySet);
+            Object queryData[][] = assignDataToTable(querySet, header);
+            DefaultTableModel a = new DefaultTableModel(queryData, header);
+            jBookViewTable.setModel(a);
+
+        });
+
         // On Click - Search
         btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -192,13 +210,18 @@ public class ViewBooksWindow {
                 int searchByTextComboBoxIndex = cbSearchByBox.getSelectedIndex();
                 int sortByTextComboBoxIndex = cbSortByBox.getSelectedIndex();
                 String searchByText = searchByDatabaseFields[searchByTextComboBoxIndex];
-                String sortByText = sortByDatabaseFields[sortByTextComboBoxIndex];
                 boolean descending = chbSortOrderBox.isSelected();
                 if (searchBoxText.isEmpty()) {
                     JOptionPane.showMessageDialog(fViewBook, "First Enter text to search");
                 } else {
-                    // System.out.println(searchByText + " " + sortByText + " " + descending);
-                    ArrayList<Book> querySet = Book.searchBooks(searchBoxText, searchByText);
+                    // Search
+                    ArrayList<Book> afterSearch = Book.searchBooks(searchBoxText, searchByText);
+                    // Sort
+                    Object[][] sortedArray = Book.performSortOperation(afterSearch, sortByTextComboBoxIndex);
+                    ArrayList<Book> querySet = Book.convertObjectToArrayList(sortedArray);
+                    if (descending) {
+                        Collections.reverse(querySet);
+                    }
                     booksArray.clear();
                     booksArray.addAll(querySet);
                     if (querySet.isEmpty()) {
@@ -245,9 +268,14 @@ public class ViewBooksWindow {
             }
         });
 
-        btnRefresh.addActionListener(e->{
-            fViewBook.dispose();
-            new ViewBooksWindow();
+        // Button - Refresh
+        btnRefresh.addActionListener(e -> {
+            ArrayList<Book> querySet = Book.getAllBooks();
+            booksArray.clear();
+            booksArray.addAll(querySet);
+            Object queryData[][] = assignDataToTable(querySet, header);
+            DefaultTableModel a = new DefaultTableModel(queryData, header);
+            jBookViewTable.setModel(a);
         });
 
         fViewBook.setSize(1000, 1000);
