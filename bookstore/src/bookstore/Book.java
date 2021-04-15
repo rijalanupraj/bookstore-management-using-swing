@@ -59,6 +59,34 @@ public class Book {
         return bookArray;
     }
 
+    static ArrayList<Book> getOnlyAvailableBooks() {
+        ArrayList<Book> allBooks = getAllBooks();
+        ArrayList<Book> availableBooks = new ArrayList<Book>();
+
+        for (int i = 0; i < allBooks.size(); i++) {
+            Book book = allBooks.get(i);
+            if (book.numAvailable > 0) {
+                availableBooks.add(book);
+            }
+        }
+        return availableBooks;
+
+    }
+
+    static ArrayList<Book> getOnlySoldBooks() {
+        ArrayList<Book> allBooks = getAllBooks();
+        ArrayList<Book> soldBooks = new ArrayList<Book>();
+
+        for (int i = 0; i < allBooks.size(); i++) {
+            Book book = allBooks.get(i);
+            if (book.numSold > 0) {
+                soldBooks.add(book);
+            }
+        }
+        return soldBooks;
+
+    }
+
     static boolean checkISBNExists(String isbn) {
         ArrayList<Book> allBooks = getAllBooks();
         for (int i = 0; i < allBooks.size(); i++) {
@@ -107,6 +135,27 @@ public class Book {
             return !result;
 
         } catch (SQLException error) {
+            System.out.println(error);
+            return false;
+        }
+    }
+
+    static boolean sellBook(Book book, Integer quantity) {
+        try {
+            // DbConnect Class
+            Connection con = DbConnect.connection();
+            Integer numSold = book.numSold + quantity;
+            Integer numAvailable = book.numAvailable - quantity;
+            String query = "Update book SET num_available=?, num_sold=? WHERE id=?";
+            PreparedStatement ins = con.prepareStatement(query);
+            ins.setInt(1, numAvailable);
+            ins.setInt(2, numSold);
+            ins.setInt(3, book.id);
+            boolean result = ins.execute();
+            return !result;
+        } catch (
+
+        SQLException error) {
             System.out.println(error);
             return false;
         }
@@ -171,6 +220,65 @@ public class Book {
         return querySet;
 
     }
+
+    public Object[][] getBooksInObjects() {
+        ArrayList<Book> allBooks = getAllBooks();
+        Object[][] books = new Object[allBooks.size()][7];
+        for (int i = 0; i < allBooks.size(); i++) {
+
+            Book current = allBooks.get(i);
+            books[i][0] = current.id;
+            books[i][1] = current.isbn;
+            books[i][2] = current.title;
+            books[i][3] = current.author;
+            books[i][4] = current.publisher;
+            books[i][5] = current.publishedDate;
+            books[i][6] = current.numAvailable;
+            books[i][7] = current.numSold;
+
+        }
+        return books;
+    }
+
+    // public void mergeSort(int arr[], int l, int r) {
+
+    // if (l < r) {
+    // int m = l + (r - l) / 2;
+    // mergeSort(arr, l, m);
+    // mergeSort(arr, m + 1, r);
+    // merge(arr, l, m, r);
+    // }
+    // for (int i : arr) {
+    // System.out.println(i);
+    // }
+    // }
+
+    // public void merge(int arr[], int l, int m, int r) {
+    // int n1 = m - l + 1;
+    // int n2 = r - m;
+    // int[] L = new int[n1];
+    // int[] R = new int[n2];
+    // for (int i = 0; i < n1; i++) {
+    // L[i] = arr[l + i];
+    // }
+    // for (int i = 0; i < n2; i++) {
+    // R[i] = arr[m + 1 + i];
+    // }
+    // int i = 0, j = 0, k = l;
+    // while (i < n1 && j < n2) {
+    // if (L[i] <= R[j]) {
+    // arr[k++] = L[i++];
+    // } else {
+    // arr[k++] = R[j++];
+    // }
+    // }
+    // while (i < n1) {
+    // arr[k++] = L[i++];
+    // }
+    // while (j < n2) {
+    // arr[k++] = R[j++];
+    // }
+    // }
 
     private static String getValueFromDatabaseFieldsForSearching(Book book, String databaseField) {
         String databaseFieldData = "";

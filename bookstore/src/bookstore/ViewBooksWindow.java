@@ -15,7 +15,7 @@ public class ViewBooksWindow {
         JFrame fViewBook = new JFrame("View Book");
         JLabel lSearchByLabel, lSortByLabel, lSortByOrderLabel;
         JTextField tfSearchTextInput;
-        JButton btnBack, btnSearch, btnOnlySort, btnDeleteBook, btnEditBook;
+        JButton btnBack, btnSearch, btnOnlySort, btnDeleteBook, btnEditBook, btnViewAvailable, btnViewSold, btnSell, btnRefresh;
         JComboBox<String> cbSearchByBox, cbSortByBox;
         JCheckBox chbSortOrderBox;
 
@@ -93,13 +93,33 @@ public class ViewBooksWindow {
 
         // Delete Button
         btnDeleteBook = new JButton("Delete");
-        btnDeleteBook.setBounds(100, 650, 200, 30);
+        btnDeleteBook.setBounds(100, 650, 150, 30);
         fViewBook.add(btnDeleteBook);
 
         // Edit Button
         btnEditBook = new JButton("Edit");
-        btnEditBook.setBounds(350, 650, 200, 30);
+        btnEditBook.setBounds(280, 650, 150, 30);
         fViewBook.add(btnEditBook);
+
+        // View Available Button
+        btnViewAvailable = new JButton("View Available");
+        btnViewAvailable.setBounds(470, 650, 150, 30);
+        fViewBook.add(btnViewAvailable);
+
+        // View Sold Button
+        btnViewSold = new JButton("View Sold");
+        btnViewSold.setBounds(650, 650, 150, 30);
+        fViewBook.add(btnViewSold);
+
+        // Sell Button
+        btnSell = new JButton("Sell This Book");
+        btnSell.setBounds(300, 700, 150, 30);
+        fViewBook.add(btnSell);
+
+        // Refresh Page Button
+        btnRefresh = new JButton("Refresh");
+        btnRefresh.setBounds(300, 800, 150, 30);
+        fViewBook.add(btnRefresh);
 
         // On Click - Back Button
         btnBack.addActionListener(new ActionListener() {
@@ -149,6 +169,22 @@ public class ViewBooksWindow {
             }
         });
 
+        // On Click - Sell book
+        btnSell.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int row = jBookViewTable.getSelectedRow();
+                if (row >= 0) {
+                    Book bookInstance = booksArray.get(row);
+                    fViewBook.dispose();
+                    new SellBookWindow(bookInstance);
+
+                } else {
+                    JOptionPane.showMessageDialog(fViewBook, "Select the Row first");
+                }
+
+            }
+        });
+
         // On Click - Search
         btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -163,6 +199,8 @@ public class ViewBooksWindow {
                 } else {
                     // System.out.println(searchByText + " " + sortByText + " " + descending);
                     ArrayList<Book> querySet = Book.searchBooks(searchBoxText, searchByText);
+                    booksArray.clear();
+                    booksArray.addAll(querySet);
                     if (querySet.isEmpty()) {
                         JOptionPane.showMessageDialog(fViewBook, "Nothing Found", "Alert", JOptionPane.WARNING_MESSAGE);
                     } else {
@@ -173,6 +211,43 @@ public class ViewBooksWindow {
                 }
 
             }
+        });
+
+        // On Click - Btn Available
+        btnViewAvailable.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Book> querySet = Book.getOnlyAvailableBooks();
+                booksArray.clear();
+                booksArray.addAll(querySet);
+                if (querySet.isEmpty()) {
+                    JOptionPane.showMessageDialog(fViewBook, "Nothing Found", "Alert", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    Object queryData[][] = assignDataToTable(querySet, header);
+                    DefaultTableModel a = new DefaultTableModel(queryData, header);
+                    jBookViewTable.setModel(a);
+                }
+            }
+        });
+
+        // On Click - Btn Available
+        btnViewSold.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Book> querySet = Book.getOnlySoldBooks();
+                booksArray.clear();
+                booksArray.addAll(querySet);
+                if (querySet.isEmpty()) {
+                    JOptionPane.showMessageDialog(fViewBook, "Nothing Found", "Alert", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    Object queryData[][] = assignDataToTable(querySet, header);
+                    DefaultTableModel a = new DefaultTableModel(queryData, header);
+                    jBookViewTable.setModel(a);
+                }
+            }
+        });
+
+        btnRefresh.addActionListener(e->{
+            fViewBook.dispose();
+            new ViewBooksWindow();
         });
 
         fViewBook.setSize(1000, 1000);
