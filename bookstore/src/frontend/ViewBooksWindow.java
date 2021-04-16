@@ -76,12 +76,12 @@ public class ViewBooksWindow {
 
         // Main Search Input Box
         tfSearchTextInput = new JTextField();
-        tfSearchTextInput.setBounds(450, 100, 200, 30);
+        tfSearchTextInput.setBounds(450, 100, 300, 30);
         fViewBook.add(tfSearchTextInput);
 
         // SearchButton
         btnSearch = new JButton("Search and Sort");
-        btnSearch.setBounds(670, 100, 200, 30);
+        btnSearch.setBounds(400, 140, 200, 30);
         fViewBook.add(btnSearch);
 
         // Only Sort Button
@@ -116,12 +116,12 @@ public class ViewBooksWindow {
 
         // Sell Button
         btnSell = new JButton("Sell This Book");
-        btnSell.setBounds(300, 700, 150, 30);
+        btnSell.setBounds(390, 700, 150, 30);
         fViewBook.add(btnSell);
 
         // Refresh Page Button
         btnRefresh = new JButton("Refresh");
-        btnRefresh.setBounds(300, 800, 150, 30);
+        btnRefresh.setBounds(100, 140, 150, 30);
         fViewBook.add(btnRefresh);
 
         // On Click - Back Button
@@ -200,12 +200,16 @@ public class ViewBooksWindow {
             if (isDescending) {
                 Collections.reverse(querySet);
             }
+            if (querySet.isEmpty()) {
+                JOptionPane.showMessageDialog(fViewBook, "Something went wrong", "Alert", JOptionPane.WARNING_MESSAGE);
+            } else {
             booksArray.clear();
             booksArray.addAll(querySet);
             // Assigning the sorted data to JTable
             Object queryData[][] = assignDataToTable(querySet, header);
             DefaultTableModel a = new DefaultTableModel(queryData, header);
             jBookViewTable.setModel(a);
+            }
 
         });
 
@@ -230,13 +234,13 @@ public class ViewBooksWindow {
                     if (descending) {
                         Collections.reverse(querySet);
                     }
-                    booksArray.clear();
-                    booksArray.addAll(querySet);
+                    
                     if (querySet.isEmpty()) {
                         JOptionPane.showMessageDialog(fViewBook, "Nothing Found", "Alert", JOptionPane.WARNING_MESSAGE);
                     } else {
                         // Assigning the searched and sorted data to JTable
-
+                    	booksArray.clear();
+                        booksArray.addAll(querySet);
                         Object queryData[][] = assignDataToTable(querySet, header);
                         DefaultTableModel a = new DefaultTableModel(queryData, header);
                         jBookViewTable.setModel(a);
@@ -288,7 +292,7 @@ public class ViewBooksWindow {
             jBookViewTable.setModel(a);
         });
 
-        fViewBook.setSize(1000, 1000);
+        fViewBook.setSize(900, 800);
         fViewBook.setLayout(null);
         fViewBook.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         fViewBook.setVisible(true);
