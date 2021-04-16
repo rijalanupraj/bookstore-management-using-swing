@@ -1,4 +1,5 @@
 package frontend;
+
 import backend.*;
 
 // Import Swing Package
@@ -120,20 +121,24 @@ public class Register {
                     String username = tfUsername.getText();
                     String password = pfPassword.getText();
                     String confirmPassword = pfPassword.getText();
-
+                    // Checking if the field is empty
                     if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                         JOptionPane.showMessageDialog(fRegisterFrame, "Field cannot be empty");
                     } else if (password.length() < 4) {
+                        // Password cannot be lesser than 4 characters
                         JOptionPane.showMessageDialog(fRegisterFrame, "Password should be at least 4 characters");
                     } else if (!password.equals(confirmPassword)) {
+                        // Password and confirm Password should be same
                         JOptionPane.showMessageDialog(fRegisterFrame, "Passwords didn't match");
                     } else {
 
                         User userObj = new User(username, password);
                         if (userObj.doesUsernameExists()) {
+                            // Username should be unique
                             JOptionPane.showMessageDialog(fRegisterFrame, "Username Already Exists", "Alert",
                                     JOptionPane.WARNING_MESSAGE);
                         } else {
+                            // Save new user to the database
                             boolean result = userObj.registerUser();
                             if (result) {
                                 JOptionPane.showMessageDialog(fRegisterFrame, "User Registered");

@@ -1,4 +1,5 @@
 package frontend;
+
 import backend.*;
 
 // Import Swing Package
@@ -115,24 +116,29 @@ public class AddBookWindow {
             String price = tfPrice.getText();
             String quantity = tfQuantity.getText();
 
-            // Validating the fields
+            // Checking if it is empty
             if (isbn.isEmpty() || title.isEmpty() || author.isEmpty() || publishedDate.isEmpty() || publisher.isEmpty()
                     || price.isEmpty() || quantity.isEmpty()) {
                 JOptionPane.showMessageDialog(jAddBookFrame, "Fields cannot be empty", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isNumeric(quantity)) {
+                // Checking if the quantity is positive whole number
                 JOptionPane.showMessageDialog(jAddBookFrame, "Quantity should be whole number", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isNumberOrDouble(price) || !(Double.parseDouble(price) > 0)) {
+                // Checking if the price is numeric or double
                 JOptionPane.showMessageDialog(jAddBookFrame, "The price should be greater than zero", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isValidDate(publishedDate)) {
+                // CHecking if the date has correct format. Using method from utils class
                 JOptionPane.showMessageDialog(jAddBookFrame, "Invalid Date Format. Format:yyyy-MM-dd", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (Book.checkISBNExists(isbn)) {
+                // Checking if the ISBN number already exists or Not
                 JOptionPane.showMessageDialog(jAddBookFrame, "The ISBN number already exists", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else {
+                // Adding the book to the database
                 boolean result = Book.addNewBook(isbn, title, author, publisher, publishedDate,
                         Double.parseDouble(price), Integer.parseInt(quantity));
                 if (result) {

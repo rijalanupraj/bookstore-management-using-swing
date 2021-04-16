@@ -1,4 +1,5 @@
 package frontend;
+
 import backend.*;
 
 // Import Swing Package
@@ -147,19 +148,24 @@ public class EditBookWindow {
                 JOptionPane.showMessageDialog(jEditBookFrame, "Fields cannot be empty", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isNumeric(numAvailable) || !Utils.isNumeric(numSold)) {
+                // Checking if the numAvailable and numSold is positive whole number
                 JOptionPane.showMessageDialog(jEditBookFrame,
                         "Available Books & Sold Books should be a positive whole number", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isNumberOrDouble(price) || !(Double.parseDouble(price) > 0)) {
+                // Checking if the price is numeric or double
                 JOptionPane.showMessageDialog(jEditBookFrame, "The price should be greater than zero", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isValidDate(publishedDate)) {
+                // CHecking if the date has correct format. Using method from utils class
                 JOptionPane.showMessageDialog(jEditBookFrame, "Invalid Date Format. Format:yyyy-MM-dd", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (Book.checkISBNExists(isbn) && !isbn.equals(this.book.isbn)) {
+                // Checking if the ISBN number already exists or Not
                 JOptionPane.showMessageDialog(jEditBookFrame, "The ISBN number already exists", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else {
+                // Updating the book to the database
                 boolean result = Book.updateBook(this.book.id, isbn, title, author, publisher, publishedDate,
                         Double.parseDouble(price), Integer.parseInt(numAvailable), Integer.parseInt(numSold));
                 if (result) {

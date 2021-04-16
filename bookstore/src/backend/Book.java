@@ -11,6 +11,7 @@ public class Book {
     public String isbn, title, author, publisher, publishedDate;
     public Double price;
 
+    // Constructor
     public Book(int id, String isbn, String title, String author, String publisher, String publishedDate, Double price,
             int numAvailable, int numSold) {
         this.id = id;
@@ -24,15 +25,17 @@ public class Book {
         this.numSold = numSold;
     }
 
+    // Read all Books from the database and store it in ArrayList<Book>
     public static ArrayList<Book> getAllBooks() {
         ArrayList<Book> bookArray = new ArrayList<Book>();
-
+        // SQL Query
         String query = "SELECT * FROM book";
 
         try {
             Connection con = DbConnect.connection();
             PreparedStatement ins = con.prepareStatement(query);
             ResultSet rs = ins.executeQuery();
+            // Looping every row on database
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String isbn = rs.getString("isbn");
@@ -44,6 +47,7 @@ public class Book {
                 int numAvailable = rs.getInt("num_available");
                 int numSold = rs.getInt("num_sold");
 
+                // Creating Book object from each field of a row
                 Book book = new Book(id, isbn, title, author, publisher, publishedDate, price, numAvailable, numSold);
                 bookArray.add(book);
             }
@@ -53,6 +57,7 @@ public class Book {
         return bookArray;
     }
 
+    // Get Only Available Books - whose numAvailable > 0
     public static ArrayList<Book> getOnlyAvailableBooks() {
         ArrayList<Book> allBooks = getAllBooks();
         ArrayList<Book> availableBooks = new ArrayList<Book>();
@@ -67,6 +72,7 @@ public class Book {
 
     }
 
+    // Get Only Sold Books - Which numSold > 0
     public static ArrayList<Book> getOnlySoldBooks() {
         ArrayList<Book> allBooks = getAllBooks();
         ArrayList<Book> soldBooks = new ArrayList<Book>();
@@ -81,6 +87,7 @@ public class Book {
 
     }
 
+    // Check if the ISBN Already Exist or not
     public static boolean checkISBNExists(String isbn) {
         ArrayList<Book> allBooks = getAllBooks();
         for (int i = 0; i < allBooks.size(); i++) {
@@ -92,6 +99,7 @@ public class Book {
         return false;
     }
 
+    // Add New Book to Database
     public static boolean addNewBook(String isbn, String title, String author, String publisher, String publishedDate,
             Double price, int quantity) {
         try {
@@ -116,6 +124,7 @@ public class Book {
         }
     }
 
+    // Delete Book From The Database
     public static boolean deleteBook(int id) {
         try {
             // DbConnect Class
@@ -134,6 +143,7 @@ public class Book {
         }
     }
 
+    // Query to Sell Book. Increase Sold Amount but decrease available amount
     public static boolean sellBook(Book book, Integer quantity) {
         try {
             // DbConnect Class
@@ -155,8 +165,9 @@ public class Book {
         }
     }
 
-    public static boolean updateBook(int id, String isbn, String title, String author, String publisher, String publishedDate,
-            Double price, int numAvailable, int numSold) {
+    // Update Book
+    public static boolean updateBook(int id, String isbn, String title, String author, String publisher,
+            String publishedDate, Double price, int numAvailable, int numSold) {
         try {
             // DbConnect Class
             Connection con = DbConnect.connection();
@@ -181,6 +192,7 @@ public class Book {
         }
     }
 
+    // Search From Query And Database Fields
     public static ArrayList<Book> searchBooks(String query, String databaseField) {
         ArrayList<Book> allBooks = getAllBooks();
         ArrayList<Book> querySet = new ArrayList<Book>();
@@ -198,6 +210,7 @@ public class Book {
 
     }
 
+    // Convert Objects of Book to ArrayList<Book>
     public static ArrayList<Book> convertObjectToArrayList(Object[][] booksObjects) {
         ArrayList<Book> booksList = new ArrayList<Book>();
         for (int i = 0; i < booksObjects.length; i++) {
@@ -217,6 +230,7 @@ public class Book {
         return booksList;
     }
 
+    // Convert ArrayList<Book> to Objects of Book
     public static Object[][] getBooksInObjects(ArrayList<Book> booksList) {
         Object[][] books = new Object[booksList.size()][9];
         for (int i = 0; i < booksList.size(); i++) {
@@ -236,6 +250,7 @@ public class Book {
         return books;
     }
 
+    // Main Function to be called to Perform Sort Operation
     public static Object[][] performSortOperation(ArrayList<Book> booksList, int index) {
 
         Object[][] books = getBooksInObjects(booksList);
@@ -244,8 +259,9 @@ public class Book {
 
     }
 
+    // Merge Function for merge Sort
     public static void merge(Object arr[][], int left, int mid, int right, int index) {
-        // Find sizes of two subarrays to be merged
+        // Find sizes of two sub arrays to be merged
         int n1 = mid - left + 1;
         int n2 = right - mid;
         // Create temp arrays
@@ -257,9 +273,9 @@ public class Book {
         for (int j = 0; j < n2; ++j)
             right_arr[j] = arr[mid + 1 + j];
         // Merge the temp arrays
-        // Initial indexes of first and second subarrays
+        // Initial indexes of first and second sub arrays
         int i = 0, j = 0;
-        // Initial index of merged subarry array
+        // Initial index of merged sub array array
         int k = left;
         while (i < n1 && j < n2) {
             boolean compare = false;
@@ -313,6 +329,7 @@ public class Book {
         }
     }
 
+    // Searching made easy
     private static String getValueFromDatabaseFieldsForSearching(Book book, String databaseField) {
         String databaseFieldData = "";
         switch (databaseField) {

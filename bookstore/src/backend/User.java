@@ -10,6 +10,7 @@ public class User {
 
 	String username, password;
 
+	// Constructor
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -30,6 +31,7 @@ public class User {
 
 	}
 
+	// Register New User
 	public boolean registerUser() {
 		try {
 			// DbConnect Class
@@ -50,6 +52,7 @@ public class User {
 
 	}
 
+	// Get all Users from database and store in ArrayList<User>
 	public ArrayList<User> getAllUsers() {
 		ArrayList<User> userArray = new ArrayList<User>();
 
@@ -72,6 +75,7 @@ public class User {
 		return userArray;
 	}
 
+	// Check if the username already exists or not
 	public boolean doesUsernameExists() {
 		ArrayList<User> allUsers = this.getAllUsers();
 		for (int i = 0; i < allUsers.size(); i++) {

@@ -1,4 +1,5 @@
 package frontend;
+
 import backend.*;
 
 // Import Swing Package
@@ -49,20 +50,23 @@ public class SellBookWindow {
         fSellBookFrame.setVisible(true);
         fSellBookFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-
         // On Click - Save Button
         btnSell.addActionListener(e -> {
             String quantity = tfQuantity.getText();
             if (quantity.isEmpty()) {
+                // Quantity should not be empty
                 JOptionPane.showMessageDialog(fSellBookFrame, "Fields cannot be empty", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!Utils.isNumeric(quantity)) {
+                // Quantity Should be numeric
                 JOptionPane.showMessageDialog(fSellBookFrame, "Quantity should be positive whole number", "Alert",
                         JOptionPane.WARNING_MESSAGE);
             } else if (Integer.parseInt(quantity) > this.book.numAvailable) {
+                // Quantity should be lesser than the book available
                 String message = "Only " + String.valueOf(this.book.numAvailable) + " Books Available";
                 JOptionPane.showMessageDialog(fSellBookFrame, message, "Alert", JOptionPane.WARNING_MESSAGE);
             } else {
+                // Sell the book and update in database
                 boolean result = Book.sellBook(this.book, Integer.parseInt(quantity));
                 if (result) {
                     JOptionPane.showMessageDialog(fSellBookFrame, "Book Sold");

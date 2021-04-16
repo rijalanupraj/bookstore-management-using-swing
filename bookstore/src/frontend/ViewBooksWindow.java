@@ -1,4 +1,5 @@
 package frontend;
+
 import backend.*;
 
 // Swing
@@ -189,8 +190,11 @@ public class ViewBooksWindow {
 
         // On Click - Sort
         btnOnlySort.addActionListener(e -> {
+            // Get the index from the sort by Combo Box
             int sortByTextComboBoxIndex = cbSortByBox.getSelectedIndex();
+            // Get the boolean value from checkbox
             boolean isDescending = chbSortOrderBox.isSelected();
+            // Perform Sort Operation
             Object[][] sortedArray = Book.performSortOperation(booksArray, sortByTextComboBoxIndex);
             ArrayList<Book> querySet = Book.convertObjectToArrayList(sortedArray);
             if (isDescending) {
@@ -198,6 +202,7 @@ public class ViewBooksWindow {
             }
             booksArray.clear();
             booksArray.addAll(querySet);
+            // Assigning the sorted data to JTable
             Object queryData[][] = assignDataToTable(querySet, header);
             DefaultTableModel a = new DefaultTableModel(queryData, header);
             jBookViewTable.setModel(a);
@@ -207,7 +212,9 @@ public class ViewBooksWindow {
         // On Click - Search
         btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // Get query String
                 String searchBoxText = tfSearchTextInput.getText();
+                // Get The combo box index for search
                 int searchByTextComboBoxIndex = cbSearchByBox.getSelectedIndex();
                 int sortByTextComboBoxIndex = cbSortByBox.getSelectedIndex();
                 String searchByText = searchByDatabaseFields[searchByTextComboBoxIndex];
@@ -228,6 +235,8 @@ public class ViewBooksWindow {
                     if (querySet.isEmpty()) {
                         JOptionPane.showMessageDialog(fViewBook, "Nothing Found", "Alert", JOptionPane.WARNING_MESSAGE);
                     } else {
+                        // Assigning the searched and sorted data to JTable
+
                         Object queryData[][] = assignDataToTable(querySet, header);
                         DefaultTableModel a = new DefaultTableModel(queryData, header);
                         jBookViewTable.setModel(a);
@@ -286,6 +295,7 @@ public class ViewBooksWindow {
 
     }
 
+    // Changing to 2d Array to Display in JTable
     private Object[][] assignDataToTable(ArrayList<Book> booksArray, String[] header) {
         Object data[][] = new Object[booksArray.size()][header.length];
         // For loop to assign value to the data

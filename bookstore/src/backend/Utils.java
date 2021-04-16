@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Utils {
+    // Validation for DateField
     public static boolean isValidDate(String inDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
@@ -15,6 +16,7 @@ public class Utils {
         return true;
     }
 
+    // Check if the given string is num or double
     public static boolean isNumberOrDouble(String string) {
 
         boolean numeric = true;
@@ -23,6 +25,7 @@ public class Utils {
 
     }
 
+    // Check if the number is numeric
     public static boolean isNumeric(String string) {
         int intValue;
 

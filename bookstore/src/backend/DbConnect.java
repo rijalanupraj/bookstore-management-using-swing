@@ -18,6 +18,7 @@ public class DbConnect {
         return con;
     }
 
+    // Return true if connection is working
     static public boolean isConnectionWorking() {
         Connection con = connection();
         return (con != null);
