@@ -223,7 +223,7 @@ public class ViewBooksWindow {
                     JOptionPane.showMessageDialog(fViewBook, "First Enter text to search");
                 } else {
                     // Search
-                    ArrayList<Book> afterSearch = Book.searchBooks(searchBoxText, searchByText);
+                    ArrayList<Book> afterSearch = Book.performBookSearch(searchBoxText, searchByText);
                     // Sort
                     Object[][] sortedArray = Book.performSortOperation(afterSearch, sortByTextComboBoxIndex);
                     ArrayList<Book> querySet = Book.convertObjectToArrayList(sortedArray);

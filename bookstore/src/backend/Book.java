@@ -192,9 +192,15 @@ public class Book {
         }
     }
 
-    // Search From Query And Database Fields
-    public static ArrayList<Book> searchBooks(String query, String databaseField) {
+    // Main Method to be called during search
+    public static ArrayList<Book> performBookSearch(String query, String databaseField) {
         ArrayList<Book> allBooks = getAllBooks();
+        ArrayList<Book> querySet = linearSearch(allBooks, query, databaseField);
+        return querySet;
+    }
+
+    // Implementation of linear Search
+    public static ArrayList<Book> linearSearch(ArrayList<Book> allBooks, String query, String databaseField) {
         ArrayList<Book> querySet = new ArrayList<Book>();
         String searchQuery = query.toLowerCase();
         for (int i = 0; i < allBooks.size(); i++) {
@@ -207,7 +213,6 @@ public class Book {
             }
         }
         return querySet;
-
     }
 
     // Convert Objects of Book to ArrayList<Book>
