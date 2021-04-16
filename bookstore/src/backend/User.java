@@ -17,9 +17,6 @@ public class User {
 	}
 
 	public boolean checkCredentials() {
-		if (this.username.equals("admin") && this.password.equals("admin")) {
-			return true;
-		}
 		ArrayList<User> allUsers = this.getAllUsers();
 		for (int i = 0; i < allUsers.size(); i++) {
 			User user = allUsers.get(i);
