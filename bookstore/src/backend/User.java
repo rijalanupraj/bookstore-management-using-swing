@@ -1,4 +1,4 @@
-package bookstore;
+package backend;
 
 //Import Sql Package
 import java.sql.*;
@@ -10,12 +10,12 @@ public class User {
 
 	String username, password;
 
-	User(String username, String password) {
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 
-	boolean checkCredentials() {
+	public boolean checkCredentials() {
 		if (this.username.equals("admin") && this.password.equals("admin")) {
 			return true;
 		}
@@ -30,7 +30,7 @@ public class User {
 
 	}
 
-	boolean registerUser() {
+	public boolean registerUser() {
 		try {
 			// DbConnect Class
 			Connection con = DbConnect.connection();
@@ -50,7 +50,7 @@ public class User {
 
 	}
 
-	ArrayList<User> getAllUsers() {
+	public ArrayList<User> getAllUsers() {
 		ArrayList<User> userArray = new ArrayList<User>();
 
 		String query = "SELECT username, password FROM user";
@@ -72,7 +72,7 @@ public class User {
 		return userArray;
 	}
 
-	boolean doesUsernameExists() {
+	public boolean doesUsernameExists() {
 		ArrayList<User> allUsers = this.getAllUsers();
 		for (int i = 0; i < allUsers.size(); i++) {
 			User user = allUsers.get(i);

@@ -1,4 +1,4 @@
-package bookstore;
+package backend;
 
 //Import Sql Package
 import java.sql.*;
@@ -7,15 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Book {
-    int id;
-    String isbn;
-    String title;
-    String author;
-    String publisher;
-    String publishedDate;
-    Double price;
-    int numAvailable;
-    int numSold;
+    public int id, numAvailable, numSold;
+    public String isbn, title, author, publisher, publishedDate;
+    public Double price;
 
     public Book(int id, String isbn, String title, String author, String publisher, String publishedDate, Double price,
             int numAvailable, int numSold) {
@@ -30,7 +24,7 @@ public class Book {
         this.numSold = numSold;
     }
 
-    static ArrayList<Book> getAllBooks() {
+    public static ArrayList<Book> getAllBooks() {
         ArrayList<Book> bookArray = new ArrayList<Book>();
 
         String query = "SELECT * FROM book";
@@ -59,7 +53,7 @@ public class Book {
         return bookArray;
     }
 
-    static ArrayList<Book> getOnlyAvailableBooks() {
+    public static ArrayList<Book> getOnlyAvailableBooks() {
         ArrayList<Book> allBooks = getAllBooks();
         ArrayList<Book> availableBooks = new ArrayList<Book>();
 
@@ -73,7 +67,7 @@ public class Book {
 
     }
 
-    static ArrayList<Book> getOnlySoldBooks() {
+    public static ArrayList<Book> getOnlySoldBooks() {
         ArrayList<Book> allBooks = getAllBooks();
         ArrayList<Book> soldBooks = new ArrayList<Book>();
 
@@ -87,7 +81,7 @@ public class Book {
 
     }
 
-    static boolean checkISBNExists(String isbn) {
+    public static boolean checkISBNExists(String isbn) {
         ArrayList<Book> allBooks = getAllBooks();
         for (int i = 0; i < allBooks.size(); i++) {
             Book book = allBooks.get(i);
@@ -98,7 +92,7 @@ public class Book {
         return false;
     }
 
-    static boolean addNewBook(String isbn, String title, String author, String publisher, String publishedDate,
+    public static boolean addNewBook(String isbn, String title, String author, String publisher, String publishedDate,
             Double price, int quantity) {
         try {
             // DbConnect Class
@@ -122,7 +116,7 @@ public class Book {
         }
     }
 
-    static boolean deleteBook(int id) {
+    public static boolean deleteBook(int id) {
         try {
             // DbConnect Class
             Connection con = DbConnect.connection();
@@ -140,7 +134,7 @@ public class Book {
         }
     }
 
-    static boolean sellBook(Book book, Integer quantity) {
+    public static boolean sellBook(Book book, Integer quantity) {
         try {
             // DbConnect Class
             Connection con = DbConnect.connection();
@@ -161,7 +155,7 @@ public class Book {
         }
     }
 
-    static boolean updateBook(int id, String isbn, String title, String author, String publisher, String publishedDate,
+    public static boolean updateBook(int id, String isbn, String title, String author, String publisher, String publishedDate,
             Double price, int numAvailable, int numSold) {
         try {
             // DbConnect Class

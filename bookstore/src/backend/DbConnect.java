@@ -1,4 +1,4 @@
-package bookstore;
+package backend;
 
 // Import Sql Package
 import java.sql.*;

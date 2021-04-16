@@ -1,4 +1,5 @@
-package bookstore;
+package frontend;
+import backend.*;
 
 // Swing
 import javax.swing.*;
